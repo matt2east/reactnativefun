@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, View, Text, Alert } from "react-native";
+import { Button, View, Text, Alert, AsyncStorage } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import FormFun from "./FormFun";
 import HttpExample from "./HttpExample";
-import FetchExample from "./FetchExample"
+import FetchExample from "./FetchExample";
 
 class HomeScreen extends React.Component {
   render() {
@@ -23,17 +23,17 @@ class HomeScreen extends React.Component {
         <Button
           onPress={() => {
             Alert.alert("You tapped the button!");
+            AsyncStorage.getItem("zippy", (err, result) => {
+              console.log(result);
+              let obj = JSON.parse(result);
+              console.log(obj.zipKey);
+            });
           }}
           title="Press Me"
         />
         <Text>{`\n`}</Text>
         <Button
-          title="Fetch component"
-          onPress={() => this.props.navigation.navigate("HttpExample")}
-        />
-                <Text>{`\n`}</Text>
-        <Button
-          title="Fetch component 2"
+          title="Get API data"
           onPress={() => this.props.navigation.navigate("FetchExample")}
         />
       </View>

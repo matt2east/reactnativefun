@@ -1,50 +1,26 @@
 import React from 'react';
 import { FlatList, ActivityIndicator, Text, View  } from 'react-native';
+import fetchData from "./utils/api.js";
 
 class FetchExample extends React.Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state ={ isLoading: true}
+    this.state = {
+      data: []
+    };
   }
 
-  componentDidMount(){
-    return fetch('https://facebook.github.io/react-native/movies.json')
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson.movies,
-        }, function(){
-
-        });
-
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
+  async componentDidMount() {
+    const data = await fetchData();
+    this.setState({
+      data
+    });
   }
 
-
-
-  render(){
-
-    if(this.state.isLoading){
-      return(
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
-        </View>
-      )
-    }
-
-    return(
-      <View style={{flex: 1, paddingTop:20}}>
-        <FlatList
-          data={this.state.dataSource}
-          renderItem={({item}) => <Text>{item.title}, {item.releaseYear}</Text>}
-          keyExtractor={({id}, index) => id}
-        />
+  render() {
+    return (
+      <View>
+        <Text>{JSON.stringify(this.state, null, 2)}</Text>
       </View>
     );
   }

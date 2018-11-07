@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Button, Text } from 'react-native';
+import React, { Component } from "react";
+import { View, StyleSheet, Button, Text, AsyncStorage } from "react-native";
+import t from "tcomb-form-native";
+var isValidZip = require("is-valid-zip");
 
-import t from 'tcomb-form-native'; 
+
+
 
 const Form = t.form.Form;
 
-const User = t.struct({
-  zipcode: t.String,
+const Zip = t.struct({
+  zipcode: t.maybe(t.String)
 });
 
 const formStyles = {
@@ -14,58 +17,69 @@ const formStyles = {
   formGroup: {
     normal: {
       marginBottom: 10
-    },
+    }
   },
   controlLabel: {
     normal: {
-      color: 'blue',
+      color: "blue",
       fontSize: 18,
       marginBottom: 7,
-      fontWeight: '600'
+      fontWeight: "600"
     },
 
     error: {
-      color: 'red',
+      color: "red",
       fontSize: 18,
       marginBottom: 7,
-      fontWeight: '600'
+      fontWeight: "600"
     }
   }
-}
+};
 
 const options = {
   fields: {
     zipcode: {
-      error: 'We need a zipcode you jackass.'
-    },
+      error: "Please enter a zip code."
+    }
   },
-  stylesheet: formStyles,
+  stylesheet: formStyles
 };
 
 class FormFun extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { zipcode: "" };
+  }
 
-    constructor(props){
-        super(props);
-        this.state ={ zipcode: ""}
-      }
-    
   handleSubmit = () => {
     const value = this._form.getValue();
-    this.setState({zipcode: value.zipcode})
-  }
-  
+
+    this.setState({ zipcode: value.zipcode }, () => {
+      console.log(this.state.zipcode);
+      let zipValue = this.state.zipcode;
+      console.log("zipValue is " + zipValue);
+      console.log(isValidZip(zipValue));
+      if (isValidZip(zipValue)) {
+        console.log("valid zip code");
+        let zippy_object = {
+          zipKey: zipValue
+        };
+        AsyncStorage.setItem("zippy", JSON.stringify(zippy_object), () => {
+          AsyncStorage.getItem("zippy", (err, result) => {
+            console.log(result);
+          });
+        });
+      } else {
+        console.log("not valid zip code");
+      }
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Form 
-          ref={c => this._form = c}
-          type={User} 
-          options={options}
-        />
-        <Button
-          title="Sign Up!"
-          onPress={this.handleSubmit}
-        />
+        <Form ref={c => (this._form = c)} type={Zip} options={options} />
+        <Button title="Go!" onPress={this.handleSubmit} />
         <Text>{this.state.zipcode}</Text>
       </View>
     );
@@ -74,12 +88,11 @@ class FormFun extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    justifyContent: "center",
     marginTop: 50,
     padding: 20,
-    backgroundColor: '#ffffff',
-  },
+    backgroundColor: "#ffffff"
+  }
 });
 
-
-export default FormFun
+export default FormFun;
