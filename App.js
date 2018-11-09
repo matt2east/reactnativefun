@@ -24,6 +24,7 @@ class HomeScreen extends React.Component {
           onPress={() => {
             Alert.alert("You tapped the button!");
             AsyncStorage.getItem("zippy", (err, result) => {
+              if (err) console.log(err);
               console.log(result);
               let obj = JSON.parse(result);
               console.log(obj.zipKey);

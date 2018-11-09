@@ -3,9 +3,6 @@ import { View, StyleSheet, Button, Text, AsyncStorage } from "react-native";
 import t from "tcomb-form-native";
 var isValidZip = require("is-valid-zip");
 
-
-
-
 const Form = t.form.Form;
 
 const Zip = t.struct({
@@ -67,6 +64,7 @@ class FormFun extends Component {
         AsyncStorage.setItem("zippy", JSON.stringify(zippy_object), () => {
           AsyncStorage.getItem("zippy", (err, result) => {
             console.log(result);
+            if (err) console.log(err);
           });
         });
       } else {
