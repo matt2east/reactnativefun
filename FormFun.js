@@ -54,10 +54,10 @@ class FormFun extends Component {
     const value = this._form.getValue();
 
     this.setState({ zipcode: value.zipcode }, () => {
-      console.log(this.state.zipcode);
+      // console.log(this.state.zipcode);
       let zipValue = this.state.zipcode;
-      console.log("zipValue is " + zipValue);
-      console.log(isValidZip(zipValue));
+      // console.log("zipValue is " + zipValue);
+      // console.log(isValidZip(zipValue));
       if (isValidZip(zipValue)) {
         console.log("valid zip code");
         let zippy_object = {
@@ -65,7 +65,7 @@ class FormFun extends Component {
         };
         AsyncStorage.setItem("zippy", JSON.stringify(zippy_object), () => {
           AsyncStorage.getItem("zippy", (err, result) => {
-            console.log(result);
+            // console.log(result);
             if (err) console.log(err);
           });
         });

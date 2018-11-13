@@ -48,17 +48,21 @@ class FetchExample extends React.Component {
       );
       const { data } = await axios.get(encodedURI);
       this.setState({
-        data
+        date: data[0].DateIssue,
       });
+      console.log("drilling into data " +JSON.stringify(this.state.data[0].DateIssue))
     } catch (err) {
       console.log(err);
     }
   }
 
   render() {
+    const {
+      date
+    } = this.state;
     return (
       <View>
-        <Text>{JSON.stringify(this.state, null, 2)}</Text>
+        <Text>{JSON.stringify(date)}</Text>
       </View>
     );
   }
