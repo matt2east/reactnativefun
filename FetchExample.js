@@ -12,7 +12,7 @@ class FetchExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      airQuality:"",
     };
   }
 
@@ -48,9 +48,10 @@ class FetchExample extends React.Component {
       );
       const { data } = await axios.get(encodedURI);
       this.setState({
-        date: data[0].DateIssue,
+        airQuality: data[0].Category.Name
       });
-      console.log("drilling into data " +JSON.stringify(this.state.data[0].DateIssue))
+      // console.log(data)
+      // console.log("drilling into data " +JSON.stringify(this.state.data[0].DateIssue))
     } catch (err) {
       console.log(err);
     }
@@ -58,11 +59,11 @@ class FetchExample extends React.Component {
 
   render() {
     const {
-      date
+      airQuality
     } = this.state;
     return (
       <View>
-        <Text>{JSON.stringify(date)}</Text>
+        <Text>Air Quality: {JSON.stringify(airQuality)}</Text>
       </View>
     );
   }
