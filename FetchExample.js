@@ -4,7 +4,8 @@ import {
   ActivityIndicator,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  Button
 } from "react-native";
 import axios from "axios";
 
@@ -52,12 +53,12 @@ class FetchExample extends React.Component {
         `http://www.airnowapi.org/aq/forecast/zipCode/?format=application/json&zipCode=${zip}&date=${newdate}&distance=25&API_KEY=98394834-0971-40F7-82FE-8752A5FA0D51`
       );
       const { data } = await axios.get(encodedURI);
-      const aqdata = JSON.stringify(data[0].Category.Name)
+      const aqdata = JSON.stringify(data[0].Category.Name);
       const airQuality = aqdata.unquoted();
       this.setState({
         airQuality: airQuality
       });
-      console.log(data)
+      console.log("today " + data);
     } catch (err) {
       console.log(err);
     }
@@ -67,6 +68,12 @@ class FetchExample extends React.Component {
     const { airQuality } = this.state;
     return (
       <View>
+        <Text>Today's Conditions</Text>
+        <Button
+          title="Forecast Conditions"
+          onPress={() => this.props.navigation.navigate("Tomorrow")}
+        />
+        <Text>{`\n`}</Text>
         <Text>The air quality index is currently: {airQuality}</Text>
       </View>
     );
