@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation";
 import FormFun from "./FormFun";
 import HttpExample from "./HttpExample";
 import FetchExample from "./FetchExample";
+import Tomorrow from "./Tomorrow";
 
 class HomeScreen extends React.Component {
   render() {
@@ -34,8 +35,13 @@ class HomeScreen extends React.Component {
         />
         <Text>{`\n`}</Text>
         <Button
-          title="Get API data"
+          title="Today's Conditions"
           onPress={() => this.props.navigation.navigate("FetchExample")}
+        />
+        <Text>{`\n`}</Text>
+        <Button
+          title="Forecast Conditions"
+          onPress={() => this.props.navigation.navigate("Tomorrow")}
         />
       </View>
     );
@@ -58,7 +64,8 @@ const RootStack = createStackNavigator(
     Details: DetailsScreen,
     FormFun: FormFun,
     HttpExample: HttpExample,
-    FetchExample: FetchExample
+    FetchExample: FetchExample,
+    Tomorrow: Tomorrow
   },
   {
     initialRouteName: "Home"

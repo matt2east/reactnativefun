@@ -12,7 +12,7 @@ class FetchExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      airQuality:"",
+      airQuality: ""
     };
   }
 
@@ -30,6 +30,11 @@ class FetchExample extends React.Component {
 
   async componentDidMount() {
     try {
+      String.prototype.unquoted = function() {
+        return this.replace(/(^")|("$)/g, "");
+      };
+      //takes off quotes from String
+
       const dateObj = new Date();
       let month = dateObj.getUTCMonth() + 1; //months from 1-12
       let day = dateObj.getUTCDate();
@@ -47,23 +52,22 @@ class FetchExample extends React.Component {
         `http://www.airnowapi.org/aq/forecast/zipCode/?format=application/json&zipCode=${zip}&date=${newdate}&distance=25&API_KEY=98394834-0971-40F7-82FE-8752A5FA0D51`
       );
       const { data } = await axios.get(encodedURI);
+      const aqdata = JSON.stringify(data[0].Category.Name)
+      const airQuality = aqdata.unquoted();
       this.setState({
-        airQuality: data[0].Category.Name
+        airQuality: airQuality
       });
-      // console.log(data)
-      // console.log("drilling into data " +JSON.stringify(this.state.data[0].DateIssue))
+      console.log(data)
     } catch (err) {
       console.log(err);
     }
   }
 
   render() {
-    const {
-      airQuality
-    } = this.state;
+    const { airQuality } = this.state;
     return (
       <View>
-        <Text>Air Quality: {JSON.stringify(airQuality)}</Text>
+        <Text>The air quality index is currently: {airQuality}</Text>
       </View>
     );
   }

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Button, Text, AsyncStorage } from "react-native";
-import { createStackNavigator } from "react-navigation";
-import FetchExample from "./FetchExample";
 import t from "tcomb-form-native";
 var isValidZip = require("is-valid-zip");
 
